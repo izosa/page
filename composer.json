@@ -1,13 +1,22 @@
 {
     "name": "izosa/page",
-    "version": "dev-master",
-    "description": "Page Downloader",
-    "homepage": "https://github.com/izosa/page",
-    "keywords": ["izosa","page"],
+    "description": "izosa/page",
+    "type": "library",
+    "version": "1.0",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Hristo Hristov",
+            "email": "izosa@msn.com",
+            "role": "creator"
+        }
+    ],
     "require": {
-        "php": ">=5.4"
+        "php": ">5.4"
     },
+    "require-dev": {
+    },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "izosa\\page\\": ""
