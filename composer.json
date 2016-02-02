@@ -1,10 +1,10 @@
 {
     "name": "izosa/page",
+    "version": "dev-master",
     "description": "Page Downloader",
     "homepage": "https://github.com/izosa/page",
     "keywords": ["izosa","page"],
     "license": "MIT",
-    "minimum-stability": "beta",
     "require": {
         "php": ">=5.4"
     },
