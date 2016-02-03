@@ -14,11 +14,13 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "voku/simple_html_dom" : "1.7.2",
+        "mwhite/random-uagent" : "*"
     },
     "require-dev": {
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "izosa\\page\\": ""
