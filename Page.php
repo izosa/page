@@ -8,7 +8,11 @@ namespace izosa\page;
  */
 class Page {
 
+    public $url;
+    
     public static function hey(){ 
         return 'Tadaa';
     }
+    
+    
 }
