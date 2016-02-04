@@ -39,7 +39,7 @@ class Page {
             curl_setopt($this->handler, CURLOPT_PROXY, $proxy['url']);
         }
         
-        curl_setopt($this->handler, CURLOPT_USERAGENT, $useragent);
+        curl_setopt($this->handler, CURLOPT_USERAGENT, $this->useragent);
         curl_setopt($this->handler, CURLOPT_CUSTOMREQUEST,'GET');
         curl_setopt($this->handler, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($this->handler, CURLOPT_MAXREDIRS, 100);
@@ -68,7 +68,7 @@ class Page {
     }
 
     public function getUrl(){
-        return $this->html;
+        return $this->url;
     }
 
     public function getUserAgent(){
