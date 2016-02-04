@@ -4,36 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3fab35e6aee06c3c71107c756586f18f",
-    "content-hash": "aed47a58189ae7cc1dcc44d8579332cd",
+    "hash": "8f8280c4edbd29be375f5173aa4b503c",
+    "content-hash": "ffb6a3e06ed57e813790c939c878bf95",
     "packages": [
         {
-            "name": "mwhite/random-uagent",
+            "name": "campo/random-user-agent",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mwhite/random-uagent.git",
-                "reference": "ac4c3963c69c1d7cfd7a03adcdd82172dc22b307"
+                "url": "https://github.com/joecampo/random-user-agent.git",
+                "reference": "60f2677e87ae7551e5216c86367b5554b11c50f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mwhite/random-uagent/zipball/ac4c3963c69c1d7cfd7a03adcdd82172dc22b307",
-                "reference": "ac4c3963c69c1d7cfd7a03adcdd82172dc22b307",
+                "url": "https://api.github.com/repos/joecampo/random-user-agent/zipball/60f2677e87ae7551e5216c86367b5554b11c50f1",
+                "reference": "60f2677e87ae7551e5216c86367b5554b11c50f1",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0"
             },
             "type": "library",
             "autoload": {
-                "files": [
-                    "uagent.php"
-                ]
+                "psr-4": {
+                    "Campo\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "description": "A library for generating random User Agents",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joe Campo",
+                    "email": "jcampo@gmail.com"
+                }
+            ],
+            "description": "Generate real random user-agents.",
             "keywords": [
-                "scraping",
+                "spoofing user",
+                "user agent",
+                "user agents",
                 "user-agent"
             ],
-            "time": "2014-02-19 07:55:02"
+            "time": "2016-01-31 14:17:34"
         },
         {
             "name": "paragonie/random_compat",

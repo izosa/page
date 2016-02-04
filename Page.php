@@ -14,6 +14,7 @@ class Page {
     private $html;
     private $dom = null;
     private $handler;
+    private $useragent;
     
     public function __construct($url, $init = true, $proxy = []){
 
@@ -22,6 +23,12 @@ class Page {
     }
     
     public function download($proxy = []){
+        
+        $this->useragent =\Campo\UserAgent::random([
+            'os_type' => 'Windows',
+            'device_type' => 'Desktop'
+        ]);
+        
         $this->handler = curl_init();
         curl_setopt($this->handler, CURLOPT_URL, $this->url);
         
@@ -32,7 +39,7 @@ class Page {
             curl_setopt($this->handler, CURLOPT_PROXY, $proxy['url']);
         }
         
-        curl_setopt($this->handler, CURLOPT_USERAGENT, random_uagent());
+        curl_setopt($this->handler, CURLOPT_USERAGENT, $useragent);
         curl_setopt($this->handler, CURLOPT_CUSTOMREQUEST,'GET');
         curl_setopt($this->handler, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($this->handler, CURLOPT_MAXREDIRS, 100);
@@ -62,6 +69,10 @@ class Page {
 
     public function getUrl(){
         return $this->html;
+    }
+
+    public function getUserAgent(){
+        return $this->useragent;
     }
 
 }
