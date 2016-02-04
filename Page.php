@@ -16,9 +16,8 @@ class Page {
     private $handler;
     
     public function __construct($url, $init = true, $proxy = []){
-        
+
         $this->url = $url;
-        
         if($init) $this->download($proxy);
     }
     
