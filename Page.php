@@ -4,11 +4,9 @@ namespace izosa\page;
 
 use voku\helper\HtmlDomParser;
 
-
-
 /**
- * Parcer
- * @author aisdata
+ * Page Parcer and Downloader
+ * @author izosa@msn.com
  */
 class Page {
 
