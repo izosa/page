@@ -14,32 +14,86 @@ class Page {
     private $html;
     private $dom = null;
     private $handler;
+    private $proxy;
     private $useragent;
-    
-    public function __construct($url, $init = true, $proxy = []){
 
+
+    public static $default_useragent = [
+        'os_type' => 'Windows',
+        'device_type' => 'Desktop'
+    ];
+
+    public function __construct($url,$proxy = ''){
         $this->url = $url;
-        if($init) $this->download($proxy);
+        $this->setProxy($proxy);
     }
-    
-    public function download($proxy = []){
-        
-        $this->useragent =\Campo\UserAgent::random([
-            'os_type' => 'Windows',
-            'device_type' => 'Desktop'
-        ]);
-        
+
+    /**
+     * Load Page from existing file
+     * @param $filename
+     * @return Page
+     * @throws \Exception
+     */
+    public static function loadFromFile($filename){
+        if(file_exists($filename)){
+            $object = new self();
+            $object->html = file_get_contents($filename);
+            return $object;
+        } else {
+            throw  new \Exception('File not exist');
+        }
+    }
+
+    /**
+     * Set Proxy
+     * @param $proxy
+     */
+    public function setProxy($proxy){
+        if(is_array($proxy)){
+            $this->proxy = array_rand($proxy);
+        } else {
+            $this->proxy = $proxy;
+        }
+    }
+
+    /**
+     * Set User Agent
+     * @doc https://github.com/joecampo/random-user-agent
+     * @param string $useragent
+     * @throws \Exception
+     */
+    public function setUserAgent(array $useragent = []){
+
+        if(empty($useragent)){
+            $useragent = self::$default_useragent;
+        }
+
+        if(is_array($useragent)){
+            $this->useragent =\Campo\UserAgent::random($useragent);
+        } else {
+            throw  new \Exception('UserAgent must be array');
+        }
+    }
+
+    /**
+     * Download Page
+     */
+    public function download(){
+
+        //init
         $this->handler = curl_init();
         curl_setopt($this->handler, CURLOPT_URL, $this->url);
         
         // proxy 
-        if(!empty($proxy))
+        if(!empty($this->proxy))
         {
             curl_setopt($this->handler, CURLOPT_HTTPPROXYTUNNEL, 0);
-            curl_setopt($this->handler, CURLOPT_PROXY, $proxy['url']);
+            curl_setopt($this->handler, CURLOPT_PROXY, $this->proxy);
         }
-        
+        //user agent
         curl_setopt($this->handler, CURLOPT_USERAGENT, $this->useragent);
+
+        // options
         curl_setopt($this->handler, CURLOPT_CUSTOMREQUEST,'GET');
         curl_setopt($this->handler, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($this->handler, CURLOPT_MAXREDIRS, 100);
@@ -49,6 +103,11 @@ class Page {
         curl_close($this->handler);
     }
 
+    /**
+     * Save page in file
+     * @param $path
+     * @return bool
+     */
     public function save($path){
         $handler = fopen($path.DIRECTORY_SEPARATOR.str_replace("/", "|", $this->url), 'w+');
         $fileSize = fwrite($handler, $this->html);
