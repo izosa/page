@@ -5,7 +5,7 @@ namespace izosa\page;
 use voku\helper\HtmlDomParser;
 
 /**
- * Page Parcer and Downloader
+ * Page Parser and Downloader
  * @author izosa@msn.com
  */
 class Page {
@@ -23,9 +23,10 @@ class Page {
         'device_type' => 'Desktop'
     ];
 
-    public function __construct($url,$proxy = ''){
+    public function __construct($url,$proxy = '', $useragent = []){
         $this->url = $url;
         $this->setProxy($proxy);
+        $this->setUserAgent([]);
     }
 
     /**
@@ -36,7 +37,7 @@ class Page {
      */
     public static function loadFromFile($filename){
         if(file_exists($filename)){
-            $object = new self();
+            $object = new self('');
             $object->html = file_get_contents($filename);
             return $object;
         } else {
@@ -50,7 +51,7 @@ class Page {
      */
     public function setProxy($proxy){
         if(is_array($proxy)){
-            $this->proxy = array_rand($proxy);
+            $this->proxy = $proxy[array_rand($proxy)];
         } else {
             $this->proxy = $proxy;
         }
@@ -83,8 +84,8 @@ class Page {
         //init
         $this->handler = curl_init();
         curl_setopt($this->handler, CURLOPT_URL, $this->url);
-        
-        // proxy 
+
+        // proxy
         if(!empty($this->proxy))
         {
             curl_setopt($this->handler, CURLOPT_HTTPPROXYTUNNEL, 0);
@@ -108,20 +109,20 @@ class Page {
      * @param $path
      * @return bool
      */
-    public function save($path){
-        $handler = fopen($path.DIRECTORY_SEPARATOR.str_replace("/", "|", $this->url), 'w+');
+    public function save($filename){
+        $handler = fopen($filename, 'w+');
         $fileSize = fwrite($handler, $this->html);
         fclose($handler);
         return $fileSize > 0;
     }
-    
+
     public function find($query, $index = null){
         if(is_null($this->dom)){
             $this->dom = HtmlDomParser::str_get_html($this->html);
         }
-        $this->dom->find($query,$index);
+        return $this->dom->find($query,$index);
     }
-    
+
     public function getContent(){
         return $this->html;
     }
