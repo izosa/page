@@ -5,16 +5,18 @@ namespace izosa\page;
 use voku\helper\HtmlDomParser;
 
 /**
- * Page Parser and Downloader
+ * Page Downloader and Parcer
  * @author izosa@msn.com
  */
 class Page {
 
     private $url;
     private $html;
+    private $statusCode;
     private $dom = null;
     private $handler;
     private $proxy;
+    private $filename;
     private $useragent;
 
 
@@ -39,6 +41,7 @@ class Page {
         if(file_exists($filename)){
             $object = new self('');
             $object->html = file_get_contents($filename);
+            $object->setFile($filename);
             return $object;
         } else {
             throw  new \Exception('File not exist');
@@ -101,7 +104,21 @@ class Page {
         curl_setopt($this->handler, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->handler, CURLOPT_CONNECTTIMEOUT, 5);
         $this->html = curl_exec($this->handler);
+        $this->statusCode = curl_getinfo($this->handler, CURLINFO_HTTP_CODE);
         curl_close($this->handler);
+    }
+
+    /**
+     * Log Page Result
+     */
+    public function log(){
+        $log = new Log();
+        $log->url = $this->url;
+        $log->file = 'cm.html';
+        $log->status = $this->statusCode;
+        $log->proxy = $this->proxy;
+        $log->useragent = $this->useragent;
+        $log->save();
     }
 
     /**
@@ -113,9 +130,16 @@ class Page {
         $handler = fopen($filename, 'w+');
         $fileSize = fwrite($handler, $this->html);
         fclose($handler);
+        $this->file = $filename;
         return $fileSize > 0;
     }
 
+    /**
+     * Find DOM Element with Simple DOM Library
+     * @param $query
+     * @param null $index
+     * @return array|\voku\helper\SimpleHtmlDomNode|\voku\helper\SimpleHtmlDomNode[]|null
+     */
     public function find($query, $index = null){
         if(is_null($this->dom)){
             $this->dom = HtmlDomParser::str_get_html($this->html);
@@ -123,14 +147,52 @@ class Page {
         return $this->dom->find($query,$index);
     }
 
+
+    /**
+     * Get file
+     * @return mixed
+     */
+    public function getFile(){
+        return $this->filename;
+    }
+
+    /**
+     * Set filename
+     * @param $filename
+     * @return mixed
+     */
+    public function setFile($filename){
+        return $this->filename = $filename;
+    }
+
+    /**
+     * Get Status Code
+     * @return mixed
+     */
+    public function getStatusCode(){
+        return $this->statusCode;
+    }
+
+    /**
+     * Get Content
+     * @return mixed
+     */
     public function getContent(){
         return $this->html;
     }
 
+    /**
+     * Get URL
+     * @return mixed
+     */
     public function getUrl(){
         return $this->url;
     }
 
+    /**
+     * Get User Agent
+     * @return mixed
+     */
     public function getUserAgent(){
         return $this->useragent;
     }
