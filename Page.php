@@ -114,7 +114,7 @@ class Page {
     public function log(){
         $log = new Log();
         $log->url = $this->url;
-        $log->file = 'cm.html';
+        $log->file = $this->filename;
         $log->status = $this->statusCode;
         $log->proxy = $this->proxy;
         $log->useragent = $this->useragent;
