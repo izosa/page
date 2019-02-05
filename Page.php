@@ -130,7 +130,7 @@ class Page {
         $handler = fopen($filename, 'w+');
         $fileSize = fwrite($handler, $this->html);
         fclose($handler);
-        $this->file = $filename;
+        $this->setFile($filename);
         return $fileSize > 0;
     }
 
