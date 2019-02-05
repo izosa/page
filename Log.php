@@ -20,20 +20,20 @@ use yii\db\ActiveRecord;
  */
 class Log extends ActiveRecord
 {
-//    /**
-//     * @inheritdoc
-//     */
-//    public function behaviors()
-//    {
-//        return [
-//            'timestamp' => [
-//                TimestampBehavior::className(),
-//                'createdAtAttribute' => 'created_at',
-//                'updatedAtAttribute' => false,
-//                'value' => function() { return date('y-m-d H:i:s'); }
-//             ],
-//        ];
-//    }
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => false,
+                'value' => function() { return date('y-m-d H:i:s'); }
+            ],
+        ];
+    }
 
     public static function tableName()
     {
