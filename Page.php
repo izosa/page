@@ -18,7 +18,7 @@ class Page {
     private $proxy;
     private $useragent;
     private $filename;
-    private $tag;
+
 
 
     public static $default_useragent = [
@@ -112,14 +112,14 @@ class Page {
     /**
      * Log Page Result
      */
-    public function log(){
+    public function log($tag = ''){
         $log = new Log();
         $log->url = $this->url;
         $log->file = $this->filename;
         $log->status = $this->statusCode;
         $log->proxy = $this->proxy;
         $log->useragent = $this->useragent;
-        $log->tag = $this->tag;
+        $log->tag = $tag;
         $log->save();
     }
 
@@ -128,12 +128,11 @@ class Page {
      * @param $path
      * @return bool
      */
-    public function save($filename, $tag = ''){
+    public function save($filename){
         $handler = fopen($filename, 'w+');
         $fileSize = fwrite($handler, $this->html);
         fclose($handler);
         $this->setFile($filename);
-        $this->setTag($tag);
         return $fileSize > 0;
     }
 
@@ -148,23 +147,6 @@ class Page {
             $this->dom = HtmlDomParser::str_get_html($this->html);
         }
         return $this->dom->find($query,$index);
-    }
-
-    /**
-     * Get tag
-     * @return mixed
-     */
-    public function getTag(){
-        return $this->tag;
-    }
-
-    /**
-     * Set tag
-     * @param $tag
-     * @return mixed
-     */
-    public function setTag($tag){
-        return $this->tag = $tag;
     }
 
     /**
