@@ -20,6 +20,7 @@ class m000001_000001_create_page_log_table extends Migration
             'useragent' => $this->text(),
             'proxy' => $this->string(),
             'status' => $this->integer(),
+            'tag' => $this->string(),
         ]);
     }
 

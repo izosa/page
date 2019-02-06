@@ -17,6 +17,7 @@ use yii\db\ActiveRecord;
  * @property integer $useragent
  * @property string $proxy
  * @property integer $status
+ * @property string $tag
  */
 class Log extends ActiveRecord
 {
