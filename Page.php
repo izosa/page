@@ -2,6 +2,7 @@
 
 namespace izosa\page;
 
+use Campo\UserAgent;
 use voku\helper\HtmlDomParser;
 
 /**
@@ -18,8 +19,7 @@ class Page {
     private $proxy;
     private $useragent;
     private $filename;
-
-
+    private $headers;
 
     public static $default_useragent = [
         'os_type' => 'Windows',
@@ -61,6 +61,15 @@ class Page {
         }
     }
 
+
+    /**
+     * Set Headers
+     * @param $headers
+     */
+    public function setHeaders($headers){
+        $this->headers = $headers;
+    }
+
     /**
      * Set User Agent
      * @doc https://github.com/joecampo/random-user-agent
@@ -74,7 +83,7 @@ class Page {
         }
 
         if(is_array($useragent)){
-            $this->useragent =\Campo\UserAgent::random($useragent);
+            $this->useragent = UserAgent::random($useragent);
         } else {
             throw  new \Exception('UserAgent must be array');
         }
@@ -95,6 +104,7 @@ class Page {
             curl_setopt($this->handler, CURLOPT_HTTPPROXYTUNNEL, 0);
             curl_setopt($this->handler, CURLOPT_PROXY, $this->proxy);
         }
+
         //user agent
         curl_setopt($this->handler, CURLOPT_USERAGENT, $this->useragent);
 
@@ -104,6 +114,11 @@ class Page {
         curl_setopt($this->handler, CURLOPT_MAXREDIRS, 100);
         curl_setopt($this->handler, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->handler, CURLOPT_CONNECTTIMEOUT, 5);
+
+        if(!empty($this->headers)){
+            curl_setopt($this->handler, CURLOPT_HTTPHEADER, $this->headers);
+        }
+
         $this->html = curl_exec($this->handler);
         $this->statusCode = curl_getinfo($this->handler, CURLINFO_HTTP_CODE);
         curl_close($this->handler);
@@ -111,6 +126,8 @@ class Page {
 
     /**
      * Log Page Result
+     * @param $tag
+     * @return bool
      */
     public function log($tag = ''){
         $log = new Log();
@@ -120,12 +137,12 @@ class Page {
         $log->proxy = $this->proxy;
         $log->useragent = $this->useragent;
         $log->tag = $tag;
-        $log->save();
+        return $log->save();
     }
 
     /**
      * Save page in file
-     * @param $path
+     * @param $filename
      * @return bool
      */
     public function save($filename){
@@ -197,5 +214,4 @@ class Page {
     public function getUserAgent(){
         return $this->useragent;
     }
-
 }
