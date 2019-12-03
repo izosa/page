@@ -1,6 +1,5 @@
 <?php
 
-
 namespace izosa\page;
 
 use yii\behaviors\TimestampBehavior;
