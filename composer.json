@@ -16,7 +16,7 @@
     "require": {
         "php": ">=7.0",
         "yiisoft/yii2": ">=2.0.16",
-        "voku/simple_html_dom" : "1.7.2",
+        "voku/simple_html_dom" : "4.7.7",
         "campo/random-user-agent" : "*"
     },
     "require-dev": {
